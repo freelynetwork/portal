@@ -1,9 +1,27 @@
 <?php
 // Load environment variables from config.php
 include 'config.php';
+$instance = "rosekey.sbs";
 
 // Get user from environment variable
-$user = getenv('USER') !== false ? getenv('USER') : 'Guest';
+//echo $_COOKIE['token']."<br>";
+if (isset($_COOKIE['token'])) {
+    $token = $_COOKIE['token'];
+    $curl = curl_init();
+
+    curl_setopt($curl, CURLOPT_URL, "https://".$instance."/api/i");
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array("i" => $token)));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_POST, true);
+
+    $res = curl_exec($curl);
+    $arr = json_decode($res, true);
+    curl_close($curl);
+    $user = $arr['name'];
+} else {
+    $user = getenv('USER') !== false ? getenv('USER') : 'Guest';
+}
 ?>
 
 <!DOCTYPE html>

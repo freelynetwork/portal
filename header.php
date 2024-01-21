@@ -28,6 +28,14 @@
 <body>
     <header>
         <div id="portal-text">Rosekey Portal</div>
+        <?php
+            if (isset($_COOKIE['token'])) {
+                echo '<div id="portal-logout">ログアウト</div>';
+            } else {
+                echo '<div id="portal-login">ログイン</div>';
+            }
+            
+        ?>
         <!-- 右側は何も表示しない -->
     </header>
     <script>
@@ -35,6 +43,14 @@
         $(document).ready(function(){
             $("#portal-text").click(function(){
                 window.location.href = '/';
+            });
+            // ログイン
+            $("#portal-login").click(function(){
+                window.location.href = 'login.php';
+            });
+            // ログアウト
+            $("#portal-logout").click(function(){
+                window.location.href = 'logout.php';
             });
         });
     </script>
