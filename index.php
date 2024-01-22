@@ -4,12 +4,11 @@ include 'config.php';
 $instance = "rosekey.sbs";
 
 // Get user from environment variable
-//echo $_COOKIE['token']."<br>";
 if (isset($_COOKIE['token'])) {
     $token = $_COOKIE['token'];
     $curl = curl_init();
 
-    curl_setopt($curl, CURLOPT_URL, "https://".$instance."/api/i");
+    curl_setopt($curl, CURLOPT_URL, "https://" . $instance . "/api/i");
     curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
     curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array("i" => $token)));
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -50,10 +49,18 @@ if (isset($_COOKIE['token'])) {
         }
 
         /* 新しいスタイルを追加 */
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
         .card {
             background-color: #8FED8F;
             padding: 20px;
-            margin: 10px;
             text-align: center;
             border-radius: 10px; /* カードを四角形にする */
             width: 300px; /* カードの幅を指定 */
@@ -72,10 +79,21 @@ if (isset($_COOKIE['token'])) {
 
     <h2>おかえりなさい <?php echo $user; ?> 様</h2>
 
-    <!-- 新しいカード "Status" を追加 -->
-    <div class="card" onclick="window.location.href='/status.php';">
-        <h2>Status</h2>
-        <p>Rosekeyが起動しているかを確認することができます。</p>
+    <!-- カードコンテナを追加 -->
+    <div class="card-container">
+        <!-- 新しいカード "Status" を追加 -->
+        <div class="card" onclick="window.location.href='/status.php';">
+            <h2>Status</h2>
+            <p>Rosekeyが起動しているかを確認することができます。</p>
+        </div>
+
+        <!-- 新しいカード "Emoji Submission" を追加 -->
+        <?php if (isset($_COOKIE['token'])) : ?>
+            <div class="card" onclick="window.location.href='/emoji-new.php';">
+                <h2>絵文字申請機能</h2>
+                <p>絵文字を申請することができます。(ログインユーザーのみ)</p>
+            </div>
+        <?php endif; ?>
     </div>
 
     <?php include 'footer.php'; ?>
