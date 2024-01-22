@@ -12,12 +12,20 @@ if (isset($_COOKIE['token'])) {
     curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
     curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array("i" => $token)));
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POST, true);   
 
     $res = curl_exec($curl);
+    $status = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+
     $arr = json_decode($res, true);
     curl_close($curl);
+    // トークンが死んでたらCookie消してリロード
+    if ($status == 401) {
+        setcookie("token", "", time()-60*60*24*7);
+        header('Location: index.php');
+    }
     $user = $arr['name'];
+    echo $status;
 } else {
     $user = getenv('USER') !== false ? getenv('USER') : 'Guest';
 }
