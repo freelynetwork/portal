@@ -25,7 +25,6 @@ if (isset($_COOKIE['token'])) {
         header('Location: index.php');
     }
     $user = $arr['name'];
-    echo $status;
 } else {
     $user = getenv('USER') !== false ? getenv('USER') : 'Guest';
 }
