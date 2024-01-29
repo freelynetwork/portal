@@ -13,29 +13,49 @@ $validationErrors = [];
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate and process form data
-    $imageName = $_POST['image_name'] ?? '';
-    $imageDescription = $_POST['image_description'] ?? '';
-    $imageFile = $_FILES['image_file'] ?? null;
+    $folderName = $_POST['folder_name'] ?? '';
+    $imageFiles = $_FILES['image_file'] ?? null;
+    $imageDescriptions = $_POST['image_description'] ?? [];
 
-    // Validate image file
-    if (!$imageFile || !is_uploaded_file($imageFile['tmp_name'])) {
+    // Validate folder name
+    if (empty($folderName)) {
+        $validationErrors[] = 'フォルダの名前を入力してください。';
+    }
+
+    // Validate image files
+    if (!isset($imageFiles) || !is_array($imageFiles['tmp_name'])) {
         $validationErrors[] = '画像ファイルを選択してください。';
-    } elseif (!in_array(strtolower(pathinfo($imageFile['name'], PATHINFO_EXTENSION)), ['png', 'jpg', 'jpeg'])) {
-        $validationErrors[] = 'サポートされていないファイル形式です。PNG, JPG, JPEG ファイルを選択してください。';
-    } elseif ($imageFile['size'] > 30 * 1024 * 1024) { // 30MB
-        $validationErrors[] = 'ファイルサイズが大きすぎます。30MBまでの画像ファイルを選択してください。';
-    }
+    } else {
+        $fileCount = count($imageFiles['tmp_name']);
+        if ($fileCount > 30) {
+            $validationErrors[] = '最大30枚の画像ファイルを選択してください。';
+        }
 
-    // Validate image name
-    if (empty($imageName)) {
-        $validationErrors[] = '絵文字の名前を入力してください。';
-    } elseif (!preg_match('/^[a-zA-Z]+$/', $imageName)) {
-        $validationErrors[] = '絵文字の名前は英語のみ使用できます。';
-    }
+        // Create folder based on folder name if it doesn't exist
+        $folderPath = 'emoji/' . $folderName;
+        if (!is_dir($folderPath)) {
+            mkdir($folderPath);
+        }
 
-    // Validate image description
-    if (empty($imageDescription)) {
-        $validationErrors[] = '絵文字の説明を入力してください。';
+        // Loop through each uploaded file
+        for ($i = 0; $i < $fileCount; $i++) {
+            $tmpName = $imageFiles['tmp_name'][$i];
+            $fileName = $imageFiles['name'][$i];
+            $imageDescription = $imageDescriptions[$i] ?? ''; // Modified
+
+            // Move uploaded file to the folder with the same name as folder name
+            move_uploaded_file($tmpName, $folderPath . '/' . $fileName);
+
+            // Add entry to emoji.json with folder path as image path
+            if ($i === 0) {
+                $emojiData = [
+                    'image_path' => 'https://portal.joinrosekey.org/' . $folderPath . '/',
+                    'name' => $folderName,
+                    'description' => $imageDescription,
+                ];
+                $emojiJson[] = $emojiData;
+            }
+        }
     }
 
     // If no validation errors, set $validationPassed to true
@@ -43,26 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $validationPassed = true;
     }
 
-    // If everything is valid, update emoji.json and move the uploaded file
+    // If everything is valid, update emoji.json
     if ($validationPassed) {
-        // Create emoji folder if it doesn't exist
-        if (!is_dir('emoji')) {
-            mkdir('emoji');
-        }
-
-      // Add entry to emoji.json
-      $emojiData = [
-          'image_path' => 'https://portal.joinrosekey.org/emoji/' . $imageName . '.png', // Adjust file type accordingly
-          'name' => $imageName,
-          'description' => $imageDescription,
-      ];
-
-      $emojiJson = file_exists('emoji.json') ? json_decode(file_get_contents('emoji.json'), true) : [];
-      $emojiJson[] = $emojiData;
-      file_put_contents('emoji.json', json_encode($emojiJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-
-        // Move uploaded file to /emoji folder
-        move_uploaded_file($imageFile['tmp_name'], 'emoji/' . $imageName . '.png'); // Adjust file type accordingly
+        // Write updated emoji.json
+        file_put_contents('emoji.json', json_encode($emojiJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
         // Display success message
         echo "絵文字の申請が完了しました。<br>3秒後にホームに戻ります。";
@@ -71,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Display error messages
         echo "エラーが発生しました。入力内容を確認してください。";
-        print_r($validationErrors); // これがエラーメッセージの詳細
+        print_r($validationErrors);
         // Additional error handling and message display can be added here
     }
 }
@@ -130,14 +134,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'header.php'; ?>
     <!-- Emoji Submission Form -->
     <form action="emoji-new.php" method="post" enctype="multipart/form-data">
-        <label for="image_file">画像ファイル (30MBまでのPNG, JPG, JPEG)</label>
-        <input type="file" name="image_file" accept=".png, .jpg, .jpeg" required><br>
+        <label for="folder_name">フォルダの名前 (英語のみ)</label> <!-- Added -->
+        <input type="text" name="folder_name" required><br> <!-- Added -->
 
-        <label for="image_name">絵文字の名前 (英語のみ)</label>
-        <input type="text" name="image_name" required><br>
+        <label for="image_file">画像ファイル (30MBまでのPNG, JPG, JPEG、最大30枚)</label>
+        <input type="file" name="image_file[]" accept=".png, .jpg, .jpeg" multiple required><br>
 
-        <label for="image_description">説明</label>
-        <textarea name="image_description" required></textarea><br>
+        <label for="image_description[]">説明</label>
+        <textarea name="image_description[]" required></textarea><br>
 
         <input type="submit" value="申請する">
     </form>
