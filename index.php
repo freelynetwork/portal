@@ -1,7 +1,7 @@
 <?php
 // Load environment variables from config.php
 include 'config.php';
-$instance = "rosekey.sbs";
+$instance = $serverurl;
 
 // Get user from environment variable
 if (isset($_COOKIE['token'])) {

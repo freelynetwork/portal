@@ -1,11 +1,13 @@
 <?php
+include 'config.php'; // config.phpを読み込む
+
     if (isset($_COOKIE['token'])) {
         echo "既にログインされています。<br>3秒後にトップページに戻ります。";
         echo '<meta http-equiv="Refresh" content="3; url=index.php">';
     } else {
         $appname = "Rosekey Portal";
         // インスタンス(仮にまた破壊した時のために変数化笑)
-        $instance = "rosekey.sbs";
+        $instance = $serverurl;
         $callback = "portal.joinrosekey.org";
         // $callback = "localhost:3000";
         // とりあえずアカウント情報の読み取りだけ
