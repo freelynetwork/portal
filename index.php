@@ -42,6 +42,8 @@ if (isset($_COOKIE['token'])) {
             padding: 0;
             background-color: white;
             text-align: center;
+            overflow-x: hidden; /* 横スクロールを禁止 */
+            overflow-y: auto; /* 縦スクロールのみを許可 */
         }
 
         h2 {

@@ -18,8 +18,8 @@ function checkStatus($url) {
 
 $cards = [
     [
-        'title' => 'Rosekey',
-        'url' => 'https://rosekey.sbs',
+        'title' => 'ぼかろすきー',
+        'url' => 'https://vocaloid.social',
     ],
     // Add more cards as needed
 ];
