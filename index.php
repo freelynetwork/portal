@@ -1,6 +1,7 @@
 <?php
 // Load environment variables from config.php
 include 'config.php';
+include 'user.php';
 $instance = $serverurl;
 
 // Get user from environment variable
@@ -87,6 +88,7 @@ if (isset($_COOKIE['token'])) {
     <?php include 'header.php'; ?>
 
     <h2>おかえりなさい <?php echo $user; ?> 様</h2>
+    <h4>あなたのユーザー名は <?php echo $username; ?> です</h4>
 
     <!-- カードコンテナを追加 -->
     <div class="card-container">
