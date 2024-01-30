@@ -102,6 +102,12 @@ if (isset($_COOKIE['token'])) {
                 <h2>絵文字申請機能</h2>
                 <p>絵文字を申請することができます。(ログインユーザーのみ)</p>
             </div>
+  <!-- スマホ対策なので削除禁止 By @16439s -->
+  <p>&nbsp;</p> 
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <!-- end -->
         <?php endif; ?>
     </div>
 
