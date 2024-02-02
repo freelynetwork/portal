@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" name="folder_name" required><br> <!-- Added -->
 
         <label for="image_file">画像ファイル (30MBまでのPNG, JPG, JPEG、最大30枚)</label>
-        <input type="file" name="image_file[]" accept=".png, .jpg, .jpeg" multiple required><br>
+        <input type="file" name="image_file[]" accept=".png, .jpg, .jpeg, .gif, .webp" multiple required><br>
 
         <label for="image_description[]">説明</label>
         <textarea name="image_description[]" required></textarea><br>
