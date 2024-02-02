@@ -34,7 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Create folder based on folder name if it doesn't exist
         $folderPath = 'emoji/' . $folderName;
         if (!is_dir($folderPath)) {
-            mkdir($folderPath);
+            if (!mkdir($folderPath, 0777, true)) {
+                // Failed to create directory
+                $validationErrors[] = 'フォルダを作成できませんでした。';
+            }
         }
 
         // Loop through each uploaded file
