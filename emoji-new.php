@@ -61,15 +61,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $imageDescription = $imageDescriptions[$i] ?? '';
 
             // Move uploaded file to the folder with the same name as folder name
-            move_uploaded_file($tmpName, $folderPath . '/' . $fileName);
-
-            // Add entry to emojis table
-            $stmt = $db->prepare("INSERT INTO emojis (image_path, name, description) VALUES (:image_path, :name, :description)");
-            $stmt->bindValue(':image_path', 'https://portal.joinrosekey.org/' . $folderPath . '/');
-            $stmt->bindValue(':name', $folderName);
-            $stmt->bindValue(':description', $imageDescription);
-            $stmt->execute();
-            $stmt->close();
+            $imagePath = $folderPath . '/' . $fileName;
+            if (move_uploaded_file($tmpName, $imagePath)) {
+                // Add entry to emojis table
+                $stmt = $db->prepare("INSERT INTO emojis (image_path, name, description) VALUES (:image_path, :name, :description)");
+                $stmt->bindValue(':image_path', 'https://portal.joinrosekey.org/' . $imagePath);
+                $stmt->bindValue(':name', $folderName);
+                $stmt->bindValue(':description', $imageDescription);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                // If failed to move file, add an error message
+                $validationErrors[] = '画像ファイルのアップロードに失敗しました。';
+            }
         }
 
         // データベース接続をクローズ
@@ -84,13 +88,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // If everything is valid, update emoji.json
     if ($validationPassed) {
         // Display success message
-        echo "絵文字の申請が完了しました。<br>3秒後にホームに戻ります。";
+        echo "絵文字の申請が完了しました。<br>3秒後にホームに戻ります。<br>";
+        echo "アップロードされた画像:<br>";
+        foreach ($imageFiles['name'] as $fileName) {
+            echo $fileName . "<br>";
+        }
         echo '<meta http-equiv="Refresh" content="3; url=index.php">';
         exit;
     } else {
         // Display error messages
-        echo "エラーが発生しました。入力内容を確認してください。";
-        print_r($validationErrors);
+        echo "エラーが発生しました。入力内容を確認してください。<br>";
+        echo "エラーメッセージ:<br>";
+        foreach ($validationErrors as $error) {
+            echo $error . "<br>";
+        }
+        echo "アップロードされた画像:<br>";
+        foreach ($imageFiles['name'] as $fileName) {
+            echo $fileName . "<br>";
+        }
         // Additional error handling and message display can be added here
     }
 }
