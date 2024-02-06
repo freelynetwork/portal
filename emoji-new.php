@@ -40,40 +40,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // SQLite3データベースファイル名
-        $dbFile = 'emoji.db';
-
-        // SQLite3データベースに接続、または作成
-        $db = new SQLite3($dbFile);
-
-        // テーブルが存在しない場合は作成
-        $db->exec("CREATE TABLE IF NOT EXISTS emojis (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    image_path TEXT,
-                    name TEXT,
-                    description TEXT
-                  )");
-
         // Loop through each uploaded file
         for ($i = 0; $i < $fileCount; $i++) {
             $tmpName = $imageFiles['tmp_name'][$i];
             $fileName = $imageFiles['name'][$i];
-            $imageDescription = $imageDescriptions[$i] ?? '';
+            $imageDescription = $imageDescriptions[$i] ?? ''; // Modified
 
             // Move uploaded file to the folder with the same name as folder name
             move_uploaded_file($tmpName, $folderPath . '/' . $fileName);
 
-            // Add entry to emojis table
-            $stmt = $db->prepare("INSERT INTO emojis (image_path, name, description) VALUES (:image_path, :name, :description)");
-            $stmt->bindValue(':image_path', 'https://portal.joinrosekey.org/' . $folderPath . '/');
-            $stmt->bindValue(':name', $folderName);
-            $stmt->bindValue(':description', $imageDescription);
-            $stmt->execute();
-            $stmt->close();
+            // Add entry to emoji.json with folder path as image path
+            if ($i === 0) {
+                $emojiData = [
+                    'image_path' => 'https://portal.joinrosekey.org/' . $folderPath . '/',
+                    'name' => $folderName,
+                    'description' => $imageDescription,
+                ];
+                $emojiJson[] = $emojiData;
+            }
         }
-
-        // データベース接続をクローズ
-        $db->close();
     }
 
     // If no validation errors, set $validationPassed to true
@@ -83,6 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // If everything is valid, update emoji.json
     if ($validationPassed) {
+        // Write updated emoji.json
+        file_put_contents('emoji.json', json_encode($emojiJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+
         // Display success message
         echo "絵文字の申請が完了しました。<br>3秒後にホームに戻ります。";
         echo '<meta http-equiv="Refresh" content="3; url=index.php">';
