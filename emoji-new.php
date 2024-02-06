@@ -22,6 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $validationErrors[] = 'フォルダの名前を入力してください。';
     }
 
+    // Check if folder name already exists
+    $folderPath = 'emoji/' . $folderName;
+    if (is_dir($folderPath)) {
+        $validationErrors[] = 'このフォルダ名は既に存在します。別のフォルダ名を入力してください。';
+    }
+
     // Validate image files
     if (!isset($imageFiles) || !is_array($imageFiles['tmp_name'])) {
         $validationErrors[] = '画像ファイルを選択してください。';
@@ -32,27 +38,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Create folder based on folder name if it doesn't exist
-        $folderPath = 'emoji/' . $folderName;
-        if (!is_dir($folderPath)) {
-            if (!mkdir($folderPath, 0777, true)) {
-                // Failed to create directory
-                $validationErrors[] = 'フォルダを作成できませんでした。';
-            }
+        if (!mkdir($folderPath, 0777, true)) {
+            // Failed to create directory
+            $validationErrors[] = 'フォルダを作成できませんでした。';
         }
 
-        // SQLite3データベースファイル名
-        $dbFile = 'emoji.db';
+         // SQLite3データベースファイル名
+         $dbFile = 'emoji.db';
 
-        // SQLite3データベースに接続、または作成
-        $db = new SQLite3($dbFile);
-
-        // テーブルが存在しない場合は作成
-        $db->exec("CREATE TABLE IF NOT EXISTS emojis (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    image_path TEXT,
-                    name TEXT,
-                    description TEXT
-                  )");
+         // SQLite3データベースに接続、または作成
+         $db = new SQLite3($dbFile);
+ 
+         // テーブルが存在しない場合は作成
+         $db->exec("CREATE TABLE IF NOT EXISTS emojis (
+                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     image_path TEXT,
+                     name TEXT,
+                     description TEXT
+                   )");
 
         // Loop through each uploaded file
         for ($i = 0; $i < $fileCount; $i++) {
@@ -71,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $stmt->close();
         }
-
         // データベース接続をクローズ
         $db->close();
     }
@@ -95,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ja">
