@@ -98,7 +98,7 @@ if (isset($_COOKIE['token'])) {
 
     <?php if ($freelynetwork) : ?>
     <!-- $freelynetworkがtrueの場合の処理 -->
-    <div class="card" onclick="window.location.href='/emoji-new.php';">
+    <div class="card" onclick="window.location.href='/admin/view.php';">
         <h2>絵文字申請機能</h2>
         <p>絵文字を申請することができます。(ログインユーザーのみ)</p>
     </div>
