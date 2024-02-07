@@ -4,6 +4,13 @@ include 'config.php';
 include 'user.php';
 $instance = $serverurl;
 
+// Check if $freelynetwork is false
+if (!$freelynetwork) {
+    echo "あなたはこのページへのアクセスが許可されていません。<br>3秒後にトップページに戻ります。";
+    echo '<meta http-equiv="Refresh" content="3; url=index.php">';
+    exit;
+}
+
 // Get user from environment variable
 if (isset($_COOKIE['token'])) {
     $token = $_COOKIE['token'];
@@ -93,28 +100,12 @@ if (isset($_COOKIE['token'])) {
     <!-- カードコンテナを追加 -->
     <div class="card-container">
         <!-- 新しいカード "Status" を追加 -->
-        <div class="card" onclick="window.location.href='/status.php';">
-            <h2>Status</h2>
-            <p>Rosekeyが起動しているかを確認することができます。</p>
+        <div class="card" onclick="window.location.href='/admin/view.php';">
+            <h2>絵文字申請状況</h2>
+            <p>絵文字の申請状況を見ることができます。</p>
         </div>
-
-        <!-- 新しいカード "Emoji Submission" を追加 -->
-        <?php if (isset($_COOKIE['token'])) : ?>
-            <div class="card" onclick="window.location.href='/emoji-new.php';">
-                <h2>絵文字申請機能</h2>
-                <p>絵文字を申請することができます。(ログインユーザーのみ)</p>
-            </div>
-
-        <?php if ($freelynetwork === true) : ?>
-        <div class="card" onclick="window.location.href='/admin/index.php';">
-            <h2>管理者画面</h2>
-            <p>管理者画面にいくことができます【FreelyNetwork所属者のみ】</p>
-        </div>
-    <?php endif; ?>
   <!-- スマホ対策なので削除禁止 By @16439s -->
   <p>&nbsp;</p> 
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
   <p>&nbsp;</p>
   <p>&nbsp;</p>
   <p>&nbsp;</p>
