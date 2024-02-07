@@ -1,10 +1,10 @@
 <?php
 // Load environment variables from config.php
-include 'user.php';
+include '/user.php';
 $instance = 'vocaloid.social';
 
 // Check if $freelynetwork is false
-if (!$freelynetwork = false) {
+if (!$freelynetwork) {
     echo "あなたはこのページへのアクセスが許可されていません。<br>3秒後にトップページに戻ります。";
     echo '<meta http-equiv="Refresh" content="3; url=/index.php">';
     exit;
