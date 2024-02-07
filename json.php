@@ -2,6 +2,7 @@
 
 if (isset($_COOKIE['token'])) {
 $token = $_COOKIE['token'];
+}
   
 // POSTデータの準備
 $postData = [
