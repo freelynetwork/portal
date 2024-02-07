@@ -32,6 +32,15 @@ if (isset($_COOKIE['token'])) {
         // Check if username is retrieved successfully
         if (isset($arr['username'])) {
             $username = $arr['username'];
+
+            // Check if user is moderator or admin
+            if (isset($arr['isModerator']) && $arr['isModerator'] === true) {
+                $freelynetwork = true;
+            } elseif (isset($arr['isAdmin']) && $arr['isAdmin'] === true) {
+                $freelynetwork = true;
+            } else {
+                $freelynetwork = false;
+            }
         } else {
             $username = 'Error retrieving username.'; // Default error message
         }
@@ -46,4 +55,6 @@ if (isset($_COOKIE['token'])) {
 // Save username for later use
 $_SESSION['username'] = $username;
 
+// Save $freelynetwork for later use
+$_SESSION['freelynetwork'] = $freelynetwork ?? false;
 ?>
