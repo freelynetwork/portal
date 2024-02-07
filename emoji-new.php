@@ -1,4 +1,15 @@
 <?php
+// Initialize SQLite3 database
+$database = new SQLite3('emoji.db');
+
+// Create emoji table if it doesn't exist
+$database->exec('CREATE TABLE IF NOT EXISTS emoji (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    folder_name TEXT,
+    image_path TEXT,
+    description TEXT
+)');
+
 // Check if the user is logged in
 if (!isset($_COOKIE['token'])) {
     echo "ログインされていません。<br>3秒後にホームに戻ります。";
@@ -44,20 +55,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         for ($i = 0; $i < $fileCount; $i++) {
             $tmpName = $imageFiles['tmp_name'][$i];
             $fileName = $imageFiles['name'][$i];
-            $imageDescription = $imageDescriptions[$i] ?? ''; // Modified
+            $imageDescription = $imageDescriptions[$i] ?? '';
 
             // Move uploaded file to the folder with the same name as folder name
             move_uploaded_file($tmpName, $folderPath . '/' . $fileName);
 
-            // Add entry to emoji.json with folder path as image path
-            if ($i === 0) {
-                $emojiData = [
-                    'image_path' => 'https://portal.joinrosekey.org/' . $folderPath . '/',
-                    'name' => $folderName,
-                    'description' => $imageDescription,
-                ];
-                $emojiJson[] = $emojiData;
-            }
+            // Insert entry into emoji table
+            $statement = $database->prepare('INSERT INTO emoji (folder_name, image_path, description) VALUES (:folder_name, :image_path, :description)');
+            $statement->bindParam(':folder_name', $folderName);
+            $statement->bindParam(':image_path', $folderPath . '/' . $fileName);
+            $statement->bindParam(':description', $imageDescription);
+            $statement->execute();
         }
     }
 
@@ -66,12 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $validationPassed = true;
     }
 
-    // If everything is valid, update emoji.json
+    // If everything is valid, display success message
     if ($validationPassed) {
-        // Write updated emoji.json
-        file_put_contents('emoji.json', json_encode($emojiJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-
-        // Display success message
         echo "絵文字の申請が完了しました。<br>3秒後にホームに戻ります。";
         echo '<meta http-equiv="Refresh" content="3; url=index.php">';
         exit;
@@ -137,8 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'header.php'; ?>
     <!-- Emoji Submission Form -->
     <form action="emoji-new.php" method="post" enctype="multipart/form-data">
-        <label for="folder_name">フォルダの名前 (英語のみ)</label> <!-- Added -->
-        <input type="text" name="folder_name" required><br> <!-- Added -->
+        <label for="folder_name">フォルダの名前 (英語のみ)</label>
+        <input type="text" name="folder_name" required><br>
 
         <label for="image_file">画像ファイル (30MBまでのPNG, JPG, JPEG、最大30枚)</label>
         <input type="file" name="image_file[]" accept=".png, .jpg, .jpeg, .gif, .webp" multiple required><br>
