@@ -62,9 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Insert entry into emoji table
             $statement = $database->prepare('INSERT INTO emoji (folder_name, image_path, description) VALUES (:folder_name, :image_path, :description)');
-            $statement->bindParam(':folder_name', $folderName, SQLITE3_TEXT);
-            $statement->bindParam(':image_path', $folderPath . '/' . $fileName, SQLITE3_TEXT);
-            $statement->bindParam(':description', $imageDescription, SQLITE3_TEXT);
+            $statement->bindValue(':folder_name', $folderName, SQLITE3_TEXT);
+            $statement->bindValue(':image_path', $folderPath . '/' . $fileName, SQLITE3_TEXT);
+            $statement->bindValue(':description', $imageDescription, SQLITE3_TEXT);
             $statement->execute();
         }
     }
