@@ -4,7 +4,11 @@ $database = new SQLite3('emoji.db');
 
 // Fetch all data from the emoji table
 $query = $database->query('SELECT * FROM emoji');
-$emojis = $query->fetchArray(SQLITE3_ASSOC);
+$emojis = [];
+
+while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+    $emojis[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
