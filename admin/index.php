@@ -112,6 +112,6 @@ if (isset($_COOKIE['token'])) {
   <!-- end -->
     </div>
 
-    <?php include 'footer.php'; ?>
+    <?php include '../footer.php'; ?>
 </body>
 </html>
