@@ -98,7 +98,7 @@ if (isset($_COOKIE['token'])) {
 
     <?php if ($freelynetwork) : ?>
     <!-- $freelynetworkがtrueの場合の処理 -->
-    <div class="card" onclick="window.location.href='/admin/view.php';">
+    <div class="card" onclick="window.location.href='/view.php';">
         <h2>絵文字申請確認フォーム</h2>
         <p>申請された絵文字を確認できます。</p>
     </div>
