@@ -97,13 +97,14 @@ if (isset($_COOKIE['token'])) {
     <h2>おかえりなさい <?php echo $user; ?> 様</h2>
     <h4>あなたのユーザー名は <?php echo $username; ?> です</h4>
 
-    <!-- カードコンテナを追加 -->
-    <div class="card-container">
-        <!-- 新しいカード "Status" を追加 -->
-        <div class="card" onclick="window.location.href='/admin/view.php';">
-            <h2>絵文字申請状況</h2>
-            <p>絵文字の申請状況を見ることができます。</p>
-        </div>
+    <?php if ($freelynetwork) : ?>
+    <!-- $freelynetworkがtrueの場合の処理 -->
+    <div class="card" onclick="window.location.href='/emoji-new.php';">
+        <h2>絵文字申請機能</h2>
+        <p>絵文字を申請することができます。(ログインユーザーのみ)</p>
+    </div>
+<?php endif; ?>
+
   <!-- スマホ対策なので削除禁止 By @16439s -->
   <p>&nbsp;</p> 
   <p>&nbsp;</p>
