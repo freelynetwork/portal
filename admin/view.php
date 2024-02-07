@@ -9,7 +9,7 @@ if (!$freelynetwork) {
 }
 
 // Initialize SQLite3 database
-$database = new SQLite3('emoji.db');
+$database = new SQLite3('../emoji.db');
 
 // Fetch all data from the emoji table
 $query = $database->query('SELECT * FROM emoji');
