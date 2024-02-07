@@ -7,7 +7,7 @@ $instance = $serverurl;
 // Check if $freelynetwork is false
 if (!$freelynetwork) {
     echo "あなたはこのページへのアクセスが許可されていません。<br>3秒後にトップページに戻ります。";
-    echo '<meta http-equiv="Refresh" content="3; url=index.php">';
+    echo '<meta http-equiv="Refresh" content="3; url=/index.php">';
     exit;
 }
 
