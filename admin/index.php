@@ -1,8 +1,7 @@
 <?php
 // Load environment variables from config.php
-include 'config.php';
 include 'user.php';
-$instance = $serverurl;
+$instance = 'vocaloid.social';
 
 // Check if $freelynetwork is false
 if (!$freelynetwork) {
