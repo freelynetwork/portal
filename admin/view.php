@@ -1,5 +1,5 @@
 <?php
-include '/user.php';
+include '../user.php';
 
 // Check if $freelynetwork is false
 if (!$freelynetwork) {
