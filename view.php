@@ -29,6 +29,7 @@ foreach ($emojis as $emoji) {
     $folders[$folder_name][] = $emoji;
 }
 
+<?php
 // 対応済みボタンがクリックされた場合の処理
 if (isset($_POST['folder_name'])) {
     $folderName = $_POST['folder_name'];
@@ -51,8 +52,12 @@ if (isset($_POST['folder_name'])) {
     $statement = $database->prepare('DELETE FROM emoji WHERE folder_name = :folder_name');
     $statement->bindValue(':folder_name', $folderName, SQLITE3_TEXT);
     $statement->execute();
+    
+    // ページをリロードするJavaScriptコード
+    echo '<script>window.location.reload();</script>';
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ja">
