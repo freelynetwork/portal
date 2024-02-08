@@ -44,11 +44,28 @@ while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .emoji-item {
+        .folder {
             margin-bottom: 20px;
+        }
+
+        .folder-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .emoji-list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .emoji-item {
             border: 1px solid #ddd;
             padding: 10px;
             border-radius: 8px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            width: calc(33.33% - 20px);
         }
 
         .emoji-item img {
@@ -56,20 +73,6 @@ while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             height: auto;
             display: block;
             margin-bottom: 10px;
-        }
-
-        .emoji-item a {
-            display: inline-block;
-            margin-bottom: 10px;
-            padding: 5px 10px;
-            background-color: #4caf50;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-
-        .emoji-item a:hover {
-            background-color: #45a049;
         }
 
         .emoji-description {
@@ -80,12 +83,18 @@ while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
 <body>
     <div class="container">
         <h1>Emojiデータ</h1>
-        <?php foreach ($emojis as $emoji): ?>
-            <div class="emoji-item">
-                <p>保存先のフォルダのパス: <?php echo htmlspecialchars($emoji['folder_name']); ?></p>
-                <img src="<?php echo htmlspecialchars($emoji['image_path']); ?>" alt="Emoji Image">
-                <p class="emoji-description">説明: <?php echo htmlspecialchars($emoji['description']); ?></p>
-                <a href="<?php echo htmlspecialchars($emoji['image_path']); ?>" download>画像ファイルをダウンロード</a>
+        <?php foreach ($folders as $folder_name => $emojis): ?>
+            <div class="folder">
+                <h2 class="folder-name"><?php echo htmlspecialchars($folder_name); ?></h2>
+                <div class="emoji-list">
+                    <?php foreach ($emojis as $emoji): ?>
+                        <div class="emoji-item">
+                            <img src="<?php echo htmlspecialchars($emoji['image_path']); ?>" alt="Emoji Image">
+                            <p class="emoji-description">説明: <?php echo htmlspecialchars($emoji['description']); ?></p>
+                            <a href="<?php echo htmlspecialchars($emoji['image_path']); ?>" download>画像ファイルをダウンロード</a>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         <?php endforeach; ?>
     </div>
