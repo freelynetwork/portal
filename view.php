@@ -28,6 +28,30 @@ foreach ($emojis as $emoji) {
     }
     $folders[$folder_name][] = $emoji;
 }
+
+// 対応済みボタンがクリックされた場合の処理
+if (isset($_POST['folder_name'])) {
+    $folderName = $_POST['folder_name'];
+    
+    // フォルダを削除する処理
+    $folderPath = '/emoji/' . $folderName; // フォルダのパスを設定（適切なパスに置き換えてください）
+    if (file_exists($folderPath)) {
+        if (is_dir($folderPath)) {
+            $files = glob($folderPath . '/*');
+            foreach ($files as $file) {
+                unlink($file); // ファイルを削除
+            }
+            rmdir($folderPath); // フォルダを削除
+        } else {
+            unlink($folderPath); // ファイルを削除
+        }
+    }
+    
+    // データベースからのレコード削除
+    $statement = $database->prepare('DELETE FROM emoji WHERE folder_name = :folder_name');
+    $statement->bindValue(':folder_name', $folderName, SQLITE3_TEXT);
+    $statement->execute();
+}
 ?>
 
 <!DOCTYPE html>
@@ -89,6 +113,11 @@ foreach ($emojis as $emoji) {
         <?php foreach ($folders as $folder_name => $folder_emojis): ?>
             <div class="folder">
                 <h2 class="folder-name"><?php echo htmlspecialchars($folder_name); ?></h2>
+                <!-- 対応済みボタン -->
+                <form method="post">
+                    <input type="hidden" name="folder_name" value="<?php echo htmlspecialchars($folder_name); ?>">
+                    <button type="submit">対応済み</button>
+                </form>
                 <div class="emoji-list">
                     <?php foreach ($folder_emojis as $emoji): ?>
                         <div class="emoji-item">
