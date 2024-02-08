@@ -18,6 +18,16 @@ $emojis = [];
 while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
     $emojis[] = $row;
 }
+
+// Group emojis by folder
+$folders = [];
+foreach ($emojis as $emoji) {
+    $folder_name = $emoji['folder_name'];
+    if (!isset($folders[$folder_name])) {
+        $folders[$folder_name] = [];
+    }
+    $folders[$folder_name][] = $emoji;
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,15 +36,14 @@ while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emojiデータ表示</title>
+    <!-- CSSスタイル -->
     <style>
-        /* CSSスタイル */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
         }
-
         .container {
             max-width: 800px;
             margin: 20px auto;
@@ -43,22 +52,18 @@ while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
         .folder {
             margin-bottom: 20px;
         }
-
         .folder-name {
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 10px;
         }
-
         .emoji-list {
             display: flex;
             flex-wrap: wrap;
         }
-
         .emoji-item {
             border: 1px solid #ddd;
             padding: 10px;
@@ -67,14 +72,12 @@ while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             margin-bottom: 10px;
             width: calc(33.33% - 20px);
         }
-
         .emoji-item img {
             max-width: 100%;
             height: auto;
             display: block;
             margin-bottom: 10px;
         }
-
         .emoji-description {
             font-style: italic;
         }
@@ -83,11 +86,11 @@ while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
 <body>
     <div class="container">
         <h1>Emojiデータ</h1>
-        <?php foreach ($folders as $folder_name => $emojis): ?>
+        <?php foreach ($folders as $folder_name => $folder_emojis): ?>
             <div class="folder">
                 <h2 class="folder-name"><?php echo htmlspecialchars($folder_name); ?></h2>
                 <div class="emoji-list">
-                    <?php foreach ($emojis as $emoji): ?>
+                    <?php foreach ($folder_emojis as $emoji): ?>
                         <div class="emoji-item">
                             <img src="<?php echo htmlspecialchars($emoji['image_path']); ?>" alt="Emoji Image">
                             <p class="emoji-description">説明: <?php echo htmlspecialchars($emoji['description']); ?></p>
