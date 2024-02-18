@@ -29,6 +29,9 @@ if (isset($_COOKIE['token'])) {
 } else {
     $user = getenv('USER') !== false ? getenv('USER') : 'Guest';
 }
+
+// Check if user is freelynetwork
+$freelynetwork = isset($freelynetwork) ? $freelynetwork : false;
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +55,7 @@ if (isset($_COOKIE['token'])) {
             font-size: 2em;
         }
 
-        h3 {
+        h4 {
             margin-top: 20px;
             font-size: 1.5em;
             color: #555;
@@ -104,29 +107,22 @@ if (isset($_COOKIE['token'])) {
                 <h2>絵文字申請機能</h2>
                 <p>絵文字を申請することができます。(ログインユーザーのみ)</p>
             </div>
+        <?php endif; ?>
 
+        <!-- 新しいカード "Soundboard" を追加 -->
         <?php if (isset($_COOKIE['token'])) : ?>
             <div class="card" onclick="window.location.href='/soundboard.php';">
                 <h2>サウンドボード</h2>
                 <p>サウンドボードを聞くことができます。(ログインユーザーのみ)</p>
             </div>
+        <?php endif; ?>
 
+        <!-- 新しいカード "管理者画面" を追加 -->
         <?php if ($freelynetwork === true) : ?>
-        <div class="card" onclick="window.location.href='/admin/index.php';">
-            <h2>管理者画面</h2>
-            <p>管理者画面にいくことができます【FreelyNetwork所属者のみ】</p>
-        </div>
-    <?php endif; ?>
-  <!-- スマホ対策なので削除禁止 By @16439s -->
-  <p>&nbsp;</p> 
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <!-- end -->
+            <div class="card" onclick="window.location.href='/admin/index.php';">
+                <h2>管理者画面</h2>
+                <p>管理者画面にいくことができます【FreelyNetwork所属者のみ】</p>
+            </div>
         <?php endif; ?>
     </div>
 
