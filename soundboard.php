@@ -137,9 +137,10 @@ $sounds = [
         <?php foreach ($sounds as $sound): ?>
             <div class="sound-card" data-soundurl="<?php echo $sound['soundurl']; ?>" onclick="playSound(this)">
                 <p><?php echo $sound['title']; ?></p>
+                <!-- 共有ボタン -->
+                <button class="share-button" onclick="shareSound('<?php echo $sound['filesid']; ?>')">Share</button>
             </div>
         <?php endforeach; ?>
-        <button class="share-button" onclick="shareSound('<?php echo $sound['filesid']; ?>')">Share</button>
     </div>
 
     <!-- JavaScript -->
@@ -149,15 +150,13 @@ $sounds = [
             var audio = new Audio(soundUrl);
             audio.play();
         }
-    </script>
-    <!-- JavaScript -->
-    <script>
+
         function shareSound(filesid) {
-        // クッキーにfilesidを保存（セッションのみ有効）
-        document.cookie = "filesid=" + filesid + "; path=/";
-        // share.phpにリダイレクト
-        window.location.href = "share.php";
-    }
+            // クッキーにfilesidを保存（セッションのみ有効）
+            document.cookie = "filesid=" + filesid + "; path=/";
+            // share.phpにリダイレクト
+            window.location.href = "share.php";
+        }
     </script>
   <?php include 'footer.php'; ?>
 </body>
