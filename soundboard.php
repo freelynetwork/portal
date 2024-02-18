@@ -35,30 +35,37 @@ $sounds = [
     [
         'soundurl' => 'https://vocaloid.social/files/5c54fbd7-15ff-4070-85a4-b049a79a3b62',
         'title' => 'いいのよ',
+        'filesid' => '9pughcn4eelc01dx',
     ],
     [
         'soundurl' => 'https://vocaloid.social/files/0f748193-a0d9-44fd-b39d-01d9f80c3659',
         'title' => 'おはよー',
+        'filesid' => '9pugit13eelc01e3',
     ],
     [
         'soundurl' => 'https://vocaloid.social/files/ddf1a2c9-a1ff-405e-b7ef-1534f39eca4e',
         'title' => 'きゃー',
+        'filesid' => '9pugisugeelc01dz',
     ],
     [
         'soundurl' => 'https://vocaloid.social/files/6e83265c-4799-40a7-badf-d56a80d25211',
         'title' => 'ごめん',
+        'filesid' => '9pugit11eelc01e2',
     ],
     [
         'soundurl' => 'https://vocaloid.social/files/2b022fe2-b73e-4a37-a520-db685a8766c4',
         'title' => 'シラー',
+        'filesid' => '9pugisyoeelc01e0',
     ],
     [
         'soundurl' => 'https://vocaloid.social/files/dfabb77b-85e2-4595-b8b8-da0cd38472d9',
         'title' => 'すごい!',
+        'filesid' => '9pugisz6eelc01e1',
     ],
     [
         'soundurl' => 'https://vocaloid.social/files/809edb57-cb05-47ca-917f-dcebc12af636',
         'title' => 'どういたしまして',
+        'filesid' => '9pugit2beelc01e4',
     ],
     // 他のサウンドを追加
 ];
@@ -113,6 +120,7 @@ $sounds = [
                 <p><?php echo $sound['title']; ?></p>
             </div>
         <?php endforeach; ?>
+        <button class="share-button" onclick="shareSound('<?php echo $sound['filesid']; ?>')">Share</button>
     </div>
 
     <!-- JavaScript -->
@@ -122,6 +130,15 @@ $sounds = [
             var audio = new Audio(soundUrl);
             audio.play();
         }
+    </script>
+    <!-- JavaScript -->
+    <script>
+        function shareSound(filesid) {
+        // クッキーにfilesidを保存（セッションのみ有効）
+        document.cookie = "filesid=" + filesid + "; path=/";
+        // share.phpにリダイレクト
+        window.location.href = "share.php";
+    }
     </script>
   <?php include 'footer.php'; ?>
 </body>
