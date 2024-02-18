@@ -128,6 +128,42 @@ $sounds = [
         .share-button:hover {
             background-color: #0056b3;
         }
+
+        /* ポップアップスタイル */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .popup button {
+            margin-top: 10px;
+            padding: 5px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .popup button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -138,9 +174,19 @@ $sounds = [
             <div class="sound-card" data-soundurl="<?php echo $sound['soundurl']; ?>" onclick="playSound(this)">
                 <p><?php echo $sound['title']; ?></p>
                 <!-- 共有ボタン -->
-                <button class="share-button" onclick="shareSound('<?php echo $sound['filesid']; ?>')">Share</button>
+                <button class="share-button" onclick="showPopup('<?php echo $sound['soundurl']; ?>')">Share</button>
             </div>
         <?php endforeach; ?>
+    </div>
+
+    <!-- ポップアップ -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <p>Rosekeyサーバーにこの音声を共有したい場合は以下のように行ってください。</p>
+            <p>ノート作成(投稿時)にファイル添付ボタンを押して、URLから を選択し以下のURLを指定してください</p>
+            <p><span id="soundUrl"></span></p>
+            <button onclick="closePopup()">OK</button>
+        </div>
     </div>
 
     <!-- JavaScript -->
@@ -151,11 +197,13 @@ $sounds = [
             audio.play();
         }
 
-        function shareSound(filesid) {
-            // クッキーにfilesidを保存（セッションのみ有効）
-            document.cookie = "filesid=" + filesid + "; path=/";
-            // share.phpにリダイレクト
-            window.location.href = "share.php";
+        function showPopup(soundUrl) {
+            document.getElementById('soundUrl').innerText = soundUrl;
+            document.getElementById('popup').style.display = 'flex';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
         }
     </script>
   <?php include 'footer.php'; ?>
