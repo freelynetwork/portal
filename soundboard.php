@@ -89,11 +89,13 @@ $sounds = [
         }
 
         .sound-card {
+            position: relative; /* 相対位置指定 */
             width: 200px;
             height: 200px;
             background-color: #f0f0f0;
             border-radius: 10px;
             display: flex;
+            flex-direction: column; /* カード内の要素を縦方向に配置する */
             justify-content: center;
             align-items: center;
             cursor: pointer;
@@ -108,6 +110,23 @@ $sounds = [
             font-size: 18px;
             font-weight: bold;
             margin: 0;
+        }
+
+        .share-button {
+            position: absolute; /* 絶対位置指定 */
+            bottom: 10px; /* カードの下端からの距離 */
+            right: 10px; /* カードの右端からの距離 */
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .share-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
