@@ -33,15 +33,36 @@ if (isset($_POST['confirm']) && $_POST['confirm'] === 'yes') {
 // サウンドボードの設定（管理しやすいように）
 $sounds = [
     [
-        'soundurl' => 'sound1.mp3',
-        'title' => 'Sound 1',
+        'soundurl' => 'https://vocaloid.social/files/5c54fbd7-15ff-4070-85a4-b049a79a3b62',
+        'title' => 'いいのよ',
     ],
     [
-        'soundurl' => 'sound2.mp3',
-        'title' => 'Sound 2',
+        'soundurl' => 'https://vocaloid.social/files/0f748193-a0d9-44fd-b39d-01d9f80c3659',
+        'title' => 'おはよー',
+    ],
+    [
+        'soundurl' => 'https://vocaloid.social/files/ddf1a2c9-a1ff-405e-b7ef-1534f39eca4e',
+        'title' => 'きゃー',
+    ],
+    [
+        'soundurl' => 'https://vocaloid.social/files/6e83265c-4799-40a7-badf-d56a80d25211',
+        'title' => 'ごめん',
+    ],
+    [
+        'soundurl' => 'https://vocaloid.social/files/2b022fe2-b73e-4a37-a520-db685a8766c4',
+        'title' => 'シラー',
+    ],
+    [
+        'soundurl' => 'https://vocaloid.social/files/dfabb77b-85e2-4595-b8b8-da0cd38472d9',
+        'title' => 'すごい!',
+    ],
+    [
+        'soundurl' => 'https://vocaloid.social/files/809edb57-cb05-47ca-917f-dcebc12af636',
+        'title' => 'どういたしまして',
     ],
     // 他のサウンドを追加
 ];
+
 ?>
 
 <!DOCTYPE html>
