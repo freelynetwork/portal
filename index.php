@@ -105,6 +105,12 @@ if (isset($_COOKIE['token'])) {
                 <p>絵文字を申請することができます。(ログインユーザーのみ)</p>
             </div>
 
+            <?php if (isset($_COOKIE['token'])) : ?>
+            <div class="card" onclick="window.location.href='/soundboard.php';">
+                <h2>サウンドボード</h2>
+                <p>サウンドボードを聞くことができます。(ログインユーザーのみ)</p>
+            </div>
+
         <?php if ($freelynetwork === true) : ?>
         <div class="card" onclick="window.location.href='/admin/index.php';">
             <h2>管理者画面</h2>
@@ -113,6 +119,8 @@ if (isset($_COOKIE['token'])) {
     <?php endif; ?>
   <!-- スマホ対策なので削除禁止 By @16439s -->
   <p>&nbsp;</p> 
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
   <p>&nbsp;</p>
   <p>&nbsp;</p>
   <p>&nbsp;</p>
