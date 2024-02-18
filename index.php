@@ -105,7 +105,7 @@ if (isset($_COOKIE['token'])) {
                 <p>絵文字を申請することができます。(ログインユーザーのみ)</p>
             </div>
 
-            <?php if (isset($_COOKIE['token'])) : ?>
+        <?php if (isset($_COOKIE['token'])) : ?>
             <div class="card" onclick="window.location.href='/soundboard.php';">
                 <h2>サウンドボード</h2>
                 <p>サウンドボードを聞くことができます。(ログインユーザーのみ)</p>
