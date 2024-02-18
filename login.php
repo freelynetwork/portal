@@ -10,8 +10,8 @@ include 'config.php'; // config.phpを読み込む
         $instance = $serverurl;
         $callback = "portal.joinrosekey.org";
         // $callback = "localhost:3000";
-        // とりあえずアカウント情報の読み取りだけ
-        $permissions = "read:account";
+        // とりあえずアカウント情報の読み取りとノート許可とドライブ閲覧だけ
+        $permissions = "read:account,write:notes,read:drive";
 
         // https://www.uuidgenerator.net/dev-corner/php を参照
         function guidv4($data = null) {
