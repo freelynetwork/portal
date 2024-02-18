@@ -199,7 +199,7 @@ $sounds = [
 
         function showPopup(soundUrl) {
             document.getElementById('soundUrl').innerText = soundUrl;
-            document.getElementById('popup').style.display = 'flex';
+            document.getElementById('popup').style.display = 'none';
         }
 
         function closePopup() {
