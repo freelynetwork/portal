@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         "text" => $text,
         "visibility" => $visibility,
         "localonly" => 'true',
-        "fileIds" => $fileid,
+        "fileIds" => array($fileid), // $fileid を配列にラップする
     );
 
     // Add replyId if replyid is not empty
