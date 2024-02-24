@@ -29,6 +29,8 @@ if (isset($_COOKIE['token'])) {
 } else {
     $user = getenv('USER') !== false ? getenv('USER') : 'Guest';
 }
+// Check if user is freelynetwork
+$freelynetwork = isset($freelynetwork) ? $freelynetwork : false;
 ?>
 
 <!DOCTYPE html>
