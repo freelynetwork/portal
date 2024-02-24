@@ -79,19 +79,49 @@ $sounds = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soundboard</title>
     <style>
-        /* CSSスタイル */
+        /* 既存のスタイルを保持 */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            text-align: center;
+            overflow-x: hidden; /* 横スクロールを禁止 */
+            overflow-y: auto; /* 縦スクロールのみを許可 */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* ビューポートの高さいっぱいに表示 */
+        }
+
+        h2 {
+            margin-top: 20px; /* 元の50pxから変更 */
+            font-size: 2em;
+        }
+
+        h3 {
+            margin-top: 10px; /* 元の20pxから変更 */
+            font-size: 1.5em;
+            color: #555;
+        }
+
+        /* 新しいスタイルを追加 */
+        .soundboard-container {
+            flex-grow: 1; /* 残りの空間を全て占有 */
+            padding: 40px;
+            overflow-y: auto; /* 縦スクロールが必要な場合にスクロールバーを表示 */
+        }
+
         .soundboard {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
-            margin-top: 50px; /* ポップアップが表示されるために余白を追加 */
+            gap: 70px;
+            padding-bottom: 70px; /* カードの下にフッターが貫通しないように余白を追加 */
         }
 
         .sound-card {
-            position: relative; /* 相対位置指定 */
-            width: 200px;
-            height: 200px;
+            width: calc(33.33% - 20px); /* カードの幅を調整 */
+            max-width: 200px; /* 最大幅を設定 */
+            margin-bottom: 20px; /* カードの下に余白を追加 */
             background-color: #f0f0f0;
             border-radius: 10px;
             display: flex;
@@ -113,9 +143,6 @@ $sounds = [
         }
 
         .share-button {
-            position: absolute; /* 絶対位置指定 */
-            bottom: 10px; /* カードの下端からの距離 */
-            right: 10px; /* カードの右端からの距離 */
             background-color: #007bff;
             color: #fff;
             padding: 5px 10px;
@@ -127,6 +154,17 @@ $sounds = [
 
         .share-button:hover {
             background-color: #0056b3;
+        }
+
+        /* フッターのスタイル */
+        .footer {
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            width: 100%;
+            position: fixed; /* 画面下部に固定 */
+            bottom: 0; /* 画面下部に固定 */
         }
 
         /* ポップアップスタイル */
@@ -165,47 +203,50 @@ $sounds = [
             background-color: #0056b3;
         }
     </style>
+
+    </style>
+
 </head>
 <body>
-  <?php include 'header.php'; ?>
-    <!-- サウンドカードの表示 -->
-    <div class="soundboard">
-        <?php foreach ($sounds as $sound): ?>
-            <div class="sound-card" data-soundurl="<?php echo $sound['soundurl']; ?>" onclick="playSound(this)">
-                <p><?php echo $sound['title']; ?></p>
-                <!-- 共有ボタン -->
-                <button class="share-button" onclick="showPopup('<?php echo $sound['soundurl']; ?>')">Share</button>
-            </div>
-        <?php endforeach; ?>
-    </div>
-
-    <!-- ポップアップ -->
-    <div class="popup" id="popup">
-        <div class="popup-content">
-            <p>Rosekeyサーバーにこの音声を共有したい場合は以下のように行ってください。</p>
-            <p>ノート作成(投稿時)にファイル添付ボタンを押して、URLから を選択し以下のURLを指定してください</p>
-            <p><span id="soundUrl"></span></p>
-            <button onclick="closePopup()">OK</button>
+<?php include 'header.php'; ?>
+<!-- サウンドカードの表示 -->
+<div class="soundboard">
+    <?php foreach ($sounds as $sound): ?>
+        <div class="sound-card" data-soundurl="<?php echo $sound['soundurl']; ?>" onclick="playSound(this)">
+            <p><?php echo $sound['title']; ?></p>
+            <!-- 共有ボタン -->
+            <button class="share-button" onclick="showPopup('<?php echo $sound['soundurl']; ?>')">Share</button>
         </div>
+    <?php endforeach; ?>
+</div>
+
+<!-- ポップアップ -->
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <p>Rosekeyサーバーにこの音声を共有したい場合は以下のように行ってください。</p>
+        <p>ノート作成(投稿時)にファイル添付ボタンを押して、URLから を選択し以下のURLを指定してください</p>
+        <p><span id="soundUrl"></span></p>
+        <button onclick="closePopup()">OK</button>
     </div>
+</div>
 
-    <!-- JavaScript -->
-    <script>
-        function playSound(button) {
-            var soundUrl = button.getAttribute('data-soundurl');
-            var audio = new Audio(soundUrl);
-            audio.play();
-        }
+<!-- JavaScript -->
+<script>
+    function playSound(button) {
+        var soundUrl = button.getAttribute('data-soundurl');
+        var audio = new Audio(soundUrl);
+        audio.play();
+    }
 
-        function showPopup(soundUrl) {
-            document.getElementById('soundUrl').innerText = soundUrl;
-            document.getElementById('popup').style.display = 'flex';
-        }
+    function showPopup(soundUrl) {
+        document.getElementById('soundUrl').innerText = soundUrl;
+        document.getElementById('popup').style.display = 'flex';
+    }
 
-        function closePopup() {
-            document.getElementById('popup').style.display = 'none';
-        }
-    </script>
-  <?php include 'footer.php'; ?>
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
+</script>
+<?php include 'footer.php'; ?>
 </body>
 </html>
