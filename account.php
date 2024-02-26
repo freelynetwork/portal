@@ -59,6 +59,7 @@ include 'header.php';
 <div class="account-info-container {">
     <div class="card">
         <h2>アカウント情報</h2>
+        <h3>ID: <?php echo $id; ?></h3>
         <h3>名前: <?php echo $name; ?></h3>
         <h3>ユーザー名: <?php echo $username; ?></h3>
         <h3>運営ユーザー: <?php echo ($freelynetwork ? 'Yes' : 'No'); ?></h3>

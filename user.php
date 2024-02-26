@@ -5,6 +5,7 @@ include 'config.php';
 // Initialize username and name variables
 $username = '';
 $name = '';
+$id = '';
 
 // Check if token exists in cookie
 if (isset($_COOKIE['token'])) {
@@ -38,6 +39,10 @@ if (isset($_COOKIE['token'])) {
                 $name = $arr['name'];
             }
 
+            if (isset($arr['id'])) {
+                $id = $arr['id'];
+            }
+
             // Check if user is moderator or admin
             if (isset($arr['isModerator']) && $arr['isModerator'] === true) {
                 $freelynetwork = true;
@@ -60,6 +65,7 @@ if (isset($_COOKIE['token'])) {
 // Save username and name for later use
 $_SESSION['username'] = $username;
 $_SESSION['name'] = $name;
+$_SESSION['id'] = $id;
 
 // Save $freelynetwork for later use
 $_SESSION['freelynetwork'] = $freelynetwork ?? false;
