@@ -12,5 +12,7 @@
             "email": "master@16439s.jp"
         }
     ],
-    "require": {}
+    "require": {
+        "stripe/stripe-php": "^13.12"
+    }
 }
