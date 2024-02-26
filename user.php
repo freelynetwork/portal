@@ -2,14 +2,15 @@
 // Load environment variables from config.php
 include 'config.php';
 
-// Initialize username variable
+// Initialize username and name variables
 $username = '';
+$name = '';
 
 // Check if token exists in cookie
 if (isset($_COOKIE['token'])) {
     $mkact = $_COOKIE['token'];
 
-    // POST request to retrieve username
+    // POST request to retrieve username and name
     $curl = curl_init();
 
     curl_setopt($curl, CURLOPT_URL, 'https://vocaloid.social/api/i');
@@ -29,9 +30,13 @@ if (isset($_COOKIE['token'])) {
         // Decode response
         $arr = json_decode($res, true);
 
-        // Check if username is retrieved successfully
+        // Check if username and name are retrieved successfully
         if (isset($arr['username'])) {
             $username = $arr['username'];
+
+            if (isset($arr['name'])) {
+                $name = $arr['name'];
+            }
 
             // Check if user is moderator or admin
             if (isset($arr['isModerator']) && $arr['isModerator'] === true) {
@@ -52,8 +57,9 @@ if (isset($_COOKIE['token'])) {
     $username = 'not login'; // Set username to 'not login'
 }
 
-// Save username for later use
+// Save username and name for later use
 $_SESSION['username'] = $username;
+$_SESSION['name'] = $name;
 
 // Save $freelynetwork for later use
 $_SESSION['freelynetwork'] = $freelynetwork ?? false;

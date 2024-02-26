@@ -25,7 +25,7 @@ if (isset($_COOKIE['token'])) {
         setcookie("token", "", time()-60*60*24*7);
         header('Location: index.php');
     }
-    $user = $arr['name'];
+    $user = $name;
 } else {
     $user = getenv('USER') !== false ? getenv('USER') : 'Guest';
 }
