@@ -1,0 +1,16 @@
+{
+    "name": "freelynetwork/portal",
+    "license": "Attribution-NonCommercial-NoDerivatives 4.0 International",
+    "autoload": {
+        "psr-4": {
+            "Freelynetwork\\Portal\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ありす",
+            "email": "master@16439s.jp"
+        }
+    ],
+    "require": {}
+}
